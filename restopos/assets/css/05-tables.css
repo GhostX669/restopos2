@@ -1,0 +1,147 @@
+/* ── Tables du restaurant (cartes) ──────────────────────────────────────── */
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 1100px) {
+    .tables-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .tables-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.table-card {
+    border-radius: var(--radius);
+    border: 2px solid;
+    padding: 14px;
+    cursor: default;
+}
+
+.table-card .t-name {
+    font-weight: 700;
+}
+
+.table-card .t-status {
+    font-size: 11px;
+    font-weight: 700;
+    margin: 6px 0 2px;
+}
+
+.table-card .t-cap {
+    font-size: 11px;
+    color: var(--muted-foreground);
+}
+
+.filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.filter-btn {
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted-foreground);
+}
+
+.filter-btn.active {
+    background: var(--foreground);
+    color: #fff;
+    border-color: var(--foreground);
+}
+
+/* ── Tableaux de données ────────────────────────────────────────────────── */
+table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+table.data-table thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: 12px;
+    background: rgba(0, 0, 0, .02);
+    border-bottom: 1px solid var(--border);
+}
+
+table.data-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+table.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+table.data-table tbody tr:hover {
+    background: rgba(0, 0, 0, .015);
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* ── Grille menu / produits ─────────────────────────────────────────────── */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 900px) {
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.menu-item-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.menu-item-card img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    display: block;
+}
+
+.menu-item-card .body {
+    padding: 12px;
+}
+
+.menu-item-card .name {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.menu-item-card .cat {
+    font-size: 11px;
+    color: var(--muted-foreground);
+    margin: 2px 0 8px;
+}
+
+.menu-item-card .price {
+    color: var(--accent);
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+}

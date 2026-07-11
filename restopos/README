@@ -1,0 +1,32 @@
+/
+├── login.php
+├── logout.php
+├── index.php
+├── includes/
+│   ├── data.php
+│   ├── layout_top.php
+│   └── layout_bottom.php
+├── traitement/
+│   ├── traitement_commande.php
+│   ├── traitement_connexion.php
+│   ├── traitement_paiement.php
+│   ├── traitement_produit.php
+│   ├── traitement_tables.php
+│   ├── traitement_utilisateurs.php
+├── views/
+│   ├── admin_dashboard.php
+│   ├── gerant_dashboard.php
+│   ├── caissier_dashboard.php
+│   ├── serveur_dashboard.php
+│   ├── tables.php
+│   ├── orders.php
+│   ├── menu.php
+│   ├── payments.php
+│   ├── reports.php
+│   ├── users.php
+│   ├── settings.php
+│   ├── encaissement.php
+│   └── prise_commande.php
+└── assets/
+    ├── style.css
+    └── app.js

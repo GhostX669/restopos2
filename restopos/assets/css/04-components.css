@@ -1,0 +1,204 @@
+/* ── Cards / KPIs ───────────────────────────────────────────────────────── */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.card-pad {
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    gap: 12px;
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 900px) {
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+}
+
+.kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin: 0 0 8px;
+}
+
+.kpi-value {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    font-family: 'DM Mono', monospace;
+}
+
+.kpi-trend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.trend-up {
+    color: #059669;
+    font-weight: 600;
+}
+
+.trend-down {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.trend-sub {
+    color: var(--muted-foreground);
+}
+
+/* ── Badges ─────────────────────────────────────────────────────────────── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* ── Boutons ────────────────────────────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+}
+
+.btn-accent {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn-accent:hover {
+    background: #ea580c;
+}
+
+.btn-muted {
+    background: var(--muted);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+}
+
+.btn-muted:hover {
+    background: #e2e4e9;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--muted-foreground);
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+/* ── Formulaires ────────────────────────────────────────────────────────── */
+.field-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    display: block;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+.field-input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    background: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+}
+
+.field-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, .15);
+}
+
+/* ── Bannières dégradées ────────────────────────────────────────────────── */
+.banner {
+    border-radius: var(--radius);
+    padding: 20px;
+    color: #fff;
+}
+
+.banner-blue {
+    background: linear-gradient(to right, #2563eb, #1e40af);
+}
+
+.banner-green {
+    background: linear-gradient(to right, #059669, #0f766e);
+}
+
+.banner-amber {
+    background: linear-gradient(to bottom right, #f59e0b, #ea580c);
+}
+
+.progress-track {
+    height: 8px;
+    background: rgba(255, 255, 255, .2);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #fff;
+    border-radius: 999px;
+}

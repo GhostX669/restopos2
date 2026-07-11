@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+    --font-size: 15px;
+    --background: #f4f5f7;
+    --foreground: #1a1d23;
+    --card: #ffffff;
+    --card-foreground: #1a1d23;
+    --primary: #1a1d23;
+    --primary-foreground: #ffffff;
+    --secondary: #eef0f4;
+    --secondary-foreground: #1a1d23;
+    --muted: #eef0f4;
+    --muted-foreground: #6b7280;
+    --accent: #f97316;  
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --border: rgba(0, 0, 0, 0.08);
+    --input-background: #f4f5f7;
+    --radius: 0.75rem;
+    --sidebar: #1a1d23;
+    --sidebar-foreground: #e5e7eb;
+    --sidebar-border: rgba(255, 255, 255, 0.07);
+}
