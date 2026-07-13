@@ -128,11 +128,12 @@ if (isset($pdo)) {
     }
 
     try {
-        $stmtDemo = $pdo->query("SELECT u.nom, u.login, r.libelle AS role, u.initiales FROM utilisateur u JOIN role r ON r.id_role = u.id_role ORDER BY u.id_utilisateur LIMIT 4");
+        $stmtDemo = $pdo->query("SELECT u.id_utilisateur, u.nom, u.login, r.libelle AS role, u.initiales FROM utilisateur u JOIN role r ON r.id_role = u.id_role ORDER BY u.id_utilisateur LIMIT 4");
         $demoAccounts = [];
         $defaultPasswords = ['admin' => 'admin123', 'gerant' => 'gerant123', 'caissier' => 'caissier123', 'serveur' => 'serveur123'];
         foreach ($stmtDemo->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $demoAccounts[] = [
+                'id' => (int)$row['id_utilisateur'],
                 'role' => $row['role'],
                 'login' => $row['login'],
                 'password' => $defaultPasswords[$row['login']] ?? '123456',
@@ -169,12 +170,13 @@ if (isset($pdo)) {
     }
 
     try {
-        $stmt = $pdo->query("SELECT p.id_produit AS id, p.nom AS name, p.prix AS price, p.disponible AS available, p.image_url AS image, c.libelle AS category FROM produit p JOIN categorie c ON c.id_categorie = p.id_categorie ORDER BY p.id_produit DESC");
+        $stmt = $pdo->query("SELECT p.id_produit AS id, p.nom AS name, p.prix AS price, p.disponible AS available, p.image_url AS image, p.id_categorie AS category_id, c.libelle AS category FROM produit p JOIN categorie c ON c.id_categorie = p.id_categorie ORDER BY p.id_produit DESC");
         while ($row = $stmt->fetch()) {
             $menuItems[] = [
                 'id' => (int)$row['id'],
                 'name' => $row['name'],
                 'category' => $row['category'],
+                'category_id' => (int)$row['category_id'],
                 'price' => (float)$row['price'],
                 'available' => (bool)$row['available'],
                 'image' => $row['image'] ?: 'assets/images/default-plat.jpg',
@@ -214,6 +216,7 @@ if (isset($pdo)) {
             }
             $orders[] = [
                 'id' => $row['numero'],
+                'id_commande' => (int)$row['id'],
                 'table' => $row['table_name'],
                 'waiter' => $row['waiter_name'],
                 'status' => $row['status'],
@@ -228,10 +231,10 @@ if (isset($pdo)) {
     }
 
     try {
-        $stmt = $pdo->query("SELECT u.nom AS name, r.libelle AS role, u.email, u.actif AS active, u.derniere_connexion AS last_login FROM utilisateur u JOIN role r ON r.id_role = u.id_role ORDER BY u.id_utilisateur");
+        $stmt = $pdo->query("SELECT u.id_utilisateur, u.nom AS name, r.libelle AS role, u.email, u.actif AS active, u.derniere_connexion AS last_login FROM utilisateur u JOIN role r ON r.id_role = u.id_role ORDER BY u.id_utilisateur");
         while ($row = $stmt->fetch()) {
             $staffList[] = [
-                'id' => null,
+                'id' => (int)$row['id_utilisateur'],
                 'name' => $row['name'],
                 'role' => $row['role'],
                 'email' => $row['email'],
@@ -244,10 +247,11 @@ if (isset($pdo)) {
     }
 
     try {
-        $stmt = $pdo->query("SELECT c.numero AS id, tr.nom AS table_name, tp.montant AS amount, mp.libelle AS method, DATE_FORMAT(tp.date_heure, '%H:%i') AS time FROM transaction_paiement tp JOIN commande c ON c.id_commande = tp.id_commande JOIN table_restaurant tr ON tr.id_table = c.id_table JOIN mode_paiement mp ON mp.id_mode_paiement = tp.id_mode_paiement ORDER BY tp.id_transaction DESC LIMIT 10");
+        $stmt = $pdo->query("SELECT tp.id_transaction, c.numero AS id, tr.nom AS table_name, tp.montant AS amount, mp.libelle AS method, DATE_FORMAT(tp.date_heure, '%H:%i') AS time FROM transaction_paiement tp JOIN commande c ON c.id_commande = tp.id_commande JOIN table_restaurant tr ON tr.id_table = c.id_table JOIN mode_paiement mp ON mp.id_mode_paiement = tp.id_mode_paiement ORDER BY tp.id_transaction DESC LIMIT 10");
         while ($row = $stmt->fetch()) {
             $recentTransactions[] = [
                 'id' => $row['id'],
+                'id_transaction' => (int)$row['id_transaction'],
                 'table' => $row['table_name'],
                 'amount' => (float)$row['amount'],
                 'method' => $row['method'],

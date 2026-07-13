@@ -202,3 +202,81 @@
     background: #fff;
     border-radius: 999px;
 }
+
+/* ── Champ mot de passe avec bouton oeil ────────────────────────────────── */
+/* .password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 42px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted-foreground);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 0;
+}
+
+.password-toggle-btn:hover {
+    color: var(--foreground);
+}
+
+.password-toggle-btn svg {
+    width: 16px;
+    height: 16px;
+} */
+ /* ── Menu contextuel produit (trois points) ─────────────────────────────── */
+.product-menu-wrap {
+    position: relative;
+}
+
+.product-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, .18);
+    z-index: 40;
+    min-width: 170px;
+    overflow: hidden;
+}
+
+.product-menu button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 13px;
+    color: var(--foreground);
+    cursor: pointer;
+}
+
+.product-menu button:hover {
+    background: var(--muted);
+}
+
+.product-menu button.danger {
+    color: #dc2626;
+}
+
+.product-menu form {
+    margin: 0;
+}

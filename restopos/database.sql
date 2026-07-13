@@ -1,6 +1,3 @@
--- Script de création de la base de données et des tables pour RestoPOS
--- À exécuter dans phpMyAdmin ou via MySQL
-
 CREATE DATABASE IF NOT EXISTS restopos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE restopos;
 

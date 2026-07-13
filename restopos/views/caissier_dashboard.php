@@ -64,10 +64,10 @@ $recentTransactions = $recentTransactions ?? [];
   </div>
   <div style="overflow-x:auto;">
   <table class="data-table">
-    <thead><tr><th>Facture</th><th>Table</th><th class="text-right">Montant</th><th>Mode</th><th>Heure</th></tr></thead>
+    <thead><tr><th>Facture</th><th>Table</th><th class="text-right">Montant</th><th>Mode</th><th>Heure</th><th></th></tr></thead>
     <tbody>
       <?php if (empty($recentTransactions)): ?>
-      <tr><td colspan="5" class="text-muted">Aucune transaction récente.</td></tr>
+      <tr><td colspan="6" class="text-muted">Aucune transaction récente.</td></tr>
       <?php else: foreach ($recentTransactions as $tx): ?>
       <tr>
         <td class="mono font-semibold"><?= $tx['id'] ?></td>
@@ -75,6 +75,9 @@ $recentTransactions = $recentTransactions ?? [];
         <td class="text-right mono font-semibold"><?= fmt($tx['amount']) ?></td>
         <td><span class="badge" style="background:#fef3c7;color:#92400e;"><?= $tx['method'] ?></span></td>
         <td class="text-xs mono text-muted"><?= $tx['time'] ?></td>
+        <td>
+          <button type="button" class="icon-btn" title="Imprimer la facture" onclick="printDoc('facture', <?= (int)($tx['id_transaction'] ?? 0) ?>)"><?= icon('printer', 14) ?></button>
+        </td>
       </tr>
       <?php endforeach; endif; ?>
     </tbody>

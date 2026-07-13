@@ -4,7 +4,7 @@ ROLE
  ├─ couleur_fond
  ├─ couleur_texte
  └─ couleur
-
+ 
 UTILISATEUR
  ├─ id_utilisateur (id)
  ├─ nom

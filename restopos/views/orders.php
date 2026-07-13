@@ -41,8 +41,8 @@ $orderStatusConfig = $orderStatusConfig ?? [];
           <?php endforeach; ?>
         </ul>
         <div class="flex gap-2 flex-wrap">
-          <button class="btn btn-muted btn-sm"><?= icon('eye', 13) ?> Voir</button>
-          <button class="btn btn-muted btn-sm"><?= icon('printer', 13) ?> Imprimer</button>
+          <button type="button" class="btn btn-muted btn-sm" onclick="printDoc('commande', <?= (int)($o['id_commande'] ?? 0) ?>, false)"><?= icon('eye', 13) ?> Voir</button>
+          <button type="button" class="btn btn-muted btn-sm" onclick="printDoc('commande', <?= (int)($o['id_commande'] ?? 0) ?>, true)"><?= icon('printer', 13) ?> Imprimer</button>
           <?php if ($o['status'] === 'ready'): ?>
           <a href="index.php?view=encaissement" class="btn btn-accent btn-sm"><?= icon('credit-card', 13) ?> Encaisser</a>
           <?php endif; ?>

@@ -115,7 +115,8 @@ table.data-table tbody tr:hover {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    overflow: hidden;
+    overflow: visible;
+    position: relative;
 }
 
 .menu-item-card img {
@@ -123,6 +124,7 @@ table.data-table tbody tr:hover {
     height: 110px;
     object-fit: cover;
     display: block;
+    border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .menu-item-card .body {

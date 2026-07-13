@@ -4,7 +4,7 @@
   <div class="grid grid-3">
     <div><p class="mono" style="font-size:22px;font-weight:700;margin:0;">3</p><p style="font-size:11px;color:#a7f3d0;margin:0;">Mes tables</p></div>
     <div><p class="mono" style="font-size:22px;font-weight:700;margin:0;">8</p><p style="font-size:11px;color:#a7f3d0;margin:0;">Commandes</p></div>
-    <div><p class="mono" style="font-size:22px;font-weight:700;margin:0;">103k F</p><p style="font-size:11px;color:#a7f3d0;margin:0;">CA généré</p></div>
+    <div><p class="mono" style="font-size:22px;font-weight:700;margin:0;">103k FC</p><p style="font-size:11px;color:#a7f3d0;margin:0;">CA généré</p></div>
   </div>
 </div>
 
@@ -36,7 +36,7 @@
       <p class="text-xs text-muted hidden-mobile" style="flex:1;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?= implode(', ', $o['items_list']) ?></p>
       <div class="flex gap-2" style="align-items:center;margin-left:auto;">
         <span class="badge" style="background:<?= $sc['bg'] ?>;color:<?= $sc['text'] ?>;"><?= $sc['label'] ?></span>
-        <span class="font-semibold mono"><?= fmtShort($o['total']) ?> F</span>
+        <span class="font-semibold mono"><?= fmtShort($o['total']) ?> FC </span>
         <?php if ($o['status'] === 'ready'): ?>
         <span style="color:#059669;"><?= icon('check-circle', 14) ?></span>
         <?php endif; ?>

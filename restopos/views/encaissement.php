@@ -17,7 +17,7 @@ $total = $order['total'] ?? 15200;
       <?php foreach (($order['items_list'] ?? ['Attiéké poisson x2', 'Bière Castel x1']) as $i => $item): ?>
       <div class="flex-between text-sm" style="padding:12px 0;<?= $i > 0 ? 'border-top:1px solid var(--border);' : '' ?>">
         <span><?= htmlspecialchars($item) ?></span>
-        <span class="font-semibold mono"><?= $i === 0 ? '11 000 F' : '4 200 F' ?></span>
+        <span class="font-semibold mono"><?= $i === 0 ? '11 000 FC' : '4 200 FC' ?></span>
       </div>
       <?php endforeach; ?>
     </div>

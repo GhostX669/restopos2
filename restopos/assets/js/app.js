@@ -120,6 +120,17 @@ function filterMenuCategory(cat) {
     btn.classList.toggle('active', btn.dataset.cat === cat);
   });
 }
+function printDoc(type, id, auto) {
+  if (!id) {
+    alert("Impossible d'imprimer : identifiant introuvable.");
+    return;
+  }
+  const url = 'imprimer.php?type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&auto=' + (auto ? '1' : '0');
+  const win = window.open(url, '_blank', 'width=420,height=600');
+  if (!win) {
+    alert("La fenêtre d'impression a été bloquée par le navigateur. Autorise les pop-ups pour ce site.");
+  }
+}
 
 // ─── Panier (prise de commande serveur) ─────────────────────────────────────
 let cart = [];
@@ -181,8 +192,16 @@ function selectTable(el) {
 
 // ─── Encaissement (caissier) ────────────────────────────────────────────────
 function selectPaymentMethod(el, method, modeId) {
-  document.querySelectorAll('.method-btn').forEach((b) => b.classList.remove('active'));
+  document.querySelectorAll('.method-btn').forEach((b) => {
+    b.classList.remove('active');
+    b.style.borderColor = 'var(--border)';
+    b.style.background = 'var(--card)';
+    b.style.color = 'var(--muted-foreground)';
+  });
   el.classList.add('active');
+  el.style.borderColor = 'var(--accent)';
+  el.style.background = '#fff7ed';
+  el.style.color = 'var(--accent)';
   const cashBlock = document.getElementById('cash-block');
   if (cashBlock) cashBlock.style.display = method === 'Espèces' ? '' : 'none';
   const hidden = document.getElementById('id_mode_paiement');
@@ -214,7 +233,15 @@ function computeChange(total) {
 
 // ─── Réglages : toggles on/off ───────────────────────────────────────────────
 function toggleSwitch(el) {
-  el.classList.toggle('on');
+  const isOn = el.classList.toggle('on');
+  const color = isOn ? '#f97316' : '#9ca3af';
+  el.style.setProperty('color', color, 'important');
+  const svg = el.querySelector('svg');
+  if (svg) {
+    svg.style.setProperty('color', color, 'important');
+    svg.style.setProperty('stroke', color, 'important');
+  }
+  el.style.transform = isOn ? 'none' : 'scaleX(-1)';
 }
 
 // ─── Onglets réglages ────────────────────────────────────────────────────────
@@ -225,7 +252,45 @@ function showSection(sectionId, btn) {
   document.querySelectorAll('.settings-nav-btn').forEach((b) => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 }
+function toggleNewTableForm() {
+  const form = document.getElementById('new-table-form');
+  if (!form) return;
+  form.style.display = (form.style.display === 'none' || !form.style.display) ? 'block' : 'none';
+}
+function toggleEditUser(id) {
+  const row = document.getElementById('edit-user-' + id);
+  if (!row) return;
+  row.style.display = (row.style.display === 'none' || !row.style.display) ? 'table-row' : 'none';
+}
+function togglePasswordVisibility(btn) {
+  const wrapper = btn.closest('.password-field');
+  if (!wrapper) return;
+  const input = wrapper.querySelector('input');
+  if (!input) return;
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  btn.setAttribute('data-lucide', isHidden ? 'eye-off' : 'eye');
+  if (window.lucide) lucide.createIcons();
+}
+function toggleProductMenu(id) {
+  const menu = document.getElementById('product-menu-' + id);
+  if (!menu) return;
+  const isOpen = menu.style.display === 'block';
+  document.querySelectorAll('.product-menu').forEach((m) => m.style.display = 'none');
+  menu.style.display = isOpen ? 'none' : 'block';
+}
 
+function toggleProductEdit(id) {
+  document.querySelectorAll('.product-menu').forEach((m) => m.style.display = 'none');
+  const row = document.getElementById('product-edit-' + id);
+  if (!row) return;
+  row.style.display = (row.style.display === 'none' || !row.style.display) ? 'block' : 'none';
+}
+
+document.addEventListener('click', (event) => {
+  if (event.target.closest('.product-menu-wrap')) return;
+  document.querySelectorAll('.product-menu').forEach((m) => m.style.display = 'none');
+});
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
   renderChecklist();

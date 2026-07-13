@@ -30,7 +30,7 @@ $availableTables = array_filter($tables, fn($t) => ($t['status'] ?? '') === 'ava
         <div class="body">
           <p class="name" style="font-size:12px;"><?= htmlspecialchars($item['name']) ?></p>
           <div class="flex-between mt-2">
-            <span class="text-xs font-bold mono" style="color:#059669;"><?= fmtShort($item['price']) ?> F</span>
+            <span class="text-xs font-bold mono" style="color:#059669;"><?= fmtShort($item['price']) ?> FC</span>
             <span style="color:#059669;"><?= icon('plus', 14) ?></span>
           </div>
         </div>
@@ -53,7 +53,7 @@ $availableTables = array_filter($tables, fn($t) => ($t['status'] ?? '') === 'ava
     </div>
     <div id="cart-list" style="padding:12px 16px;max-height:220px;overflow-y:auto;"></div>
     <div style="padding:16px;border-top:1px solid var(--border);">
-      <div class="flex-between mb-3"><span class="font-bold">Total</span><span id="cart-total" class="font-bold mono" style="color:#059669;">0 F</span></div>
+      <div class="flex-between mb-3"><span class="font-bold">Total</span><span id="cart-total" class="font-bold mono" style="color:#059669;">0 FC</span></div>
       <button type="submit" id="cart-send-btn" class="btn mt-2" style="width:100%;justify-content:center;background:#059669;color:#fff;" disabled>
         <?= icon('arrow-right', 14) ?> Envoyer en cuisine
       </button>
