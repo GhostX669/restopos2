@@ -2,22 +2,26 @@
 $orders = $orders ?? [];
 $order = null;
 foreach ($orders as $o) { if (($o['status'] ?? '') === 'ready') { $order = $o; break; } }
-$total = $order['total'] ?? 15200;
+$total = $order['total'] ?? 0;
+$itemsDetail = $order['items_detail'] ?? [];
 ?>
 <div style="max-width:560px;margin:0 auto;">
+  <?php if (!$order): ?>
+  <div class="card card-pad text-muted">Aucune commande prête à encaisser pour le moment.</div>
+  <?php else: ?>
   <div class="card mb-4">
     <div class="flex-between" style="padding:16px 20px;background:rgba(0,0,0,.02);border-bottom:1px solid var(--border);">
       <div>
-        <p class="font-semibold" style="margin:0;"><?= $order['id'] ?? '#0043' ?> · Table <?= $order['table'] ?? 'T03' ?></p>
-        <p class="text-xs text-muted" style="margin:2px 0 0;"><?= $order['waiter'] ?? 'Kouassi B.' ?></p>
+        <p class="font-semibold" style="margin:0;"><?= htmlspecialchars($order['id']) ?> · Table <?= htmlspecialchars($order['table']) ?></p>
+        <p class="text-xs text-muted" style="margin:2px 0 0;"><?= htmlspecialchars($order['waiter']) ?></p>
       </div>
       <span class="badge" style="background:#d1fae5;color:#047857;">Prêt à servir</span>
     </div>
     <div style="padding:4px 20px;">
-      <?php foreach (($order['items_list'] ?? ['Attiéké poisson x2', 'Bière Castel x1']) as $i => $item): ?>
+      <?php foreach ($itemsDetail as $i => $item): ?>
       <div class="flex-between text-sm" style="padding:12px 0;<?= $i > 0 ? 'border-top:1px solid var(--border);' : '' ?>">
-        <span><?= htmlspecialchars($item) ?></span>
-        <span class="font-semibold mono"><?= $i === 0 ? '11 000 FC' : '4 200 FC' ?></span>
+        <span><?= htmlspecialchars($item['name']) ?> x<?= $item['qty'] ?></span>
+        <span class="font-semibold mono"><?= fmt($item['line_total']) ?></span>
       </div>
       <?php endforeach; ?>
     </div>
@@ -51,4 +55,5 @@ $total = $order['total'] ?? 15200;
       <?= icon('check-circle', 15) ?> Valider le paiement
     </button>
   </form>
+  <?php endif; ?>
 </div>

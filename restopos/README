@@ -2,16 +2,28 @@
 ├── login.php
 ├── logout.php
 ├── index.php
+├── imprimer.php
 ├── includes/
 │   ├── data.php
+│   ├──config
 │   ├── layout_top.php
 │   └── layout_bottom.php
 ├── traitement/
+│   ├── export_factures.php
+│   ├── traitement_categorie.php
+│   ├── traitement_commande_statut.php
 │   ├── traitement_commande.php
 │   ├── traitement_connexion.php
 │   ├── traitement_paiement.php
+│   ├── traitement_parametres
+│   ├── traitement_password
+│   ├── traitement_produit_disponibilité.php
+│   ├── traiment_produit_supprimer.php
 │   ├── traitement_produit.php
 │   ├── traitement_tables.php
+│   ├── traiment_utilisateurs_modifier.php
+│   ├── traiment_utilisateurs_statut.php
+│   ├── traiment_utilisateurs_supprimer.php
 │   ├── traitement_utilisateurs.php
 ├── views/
 │   ├── admin_dashboard.php
@@ -28,5 +40,13 @@
 │   ├── encaissement.php
 │   └── prise_commande.php
 └── assets/
-    ├── style.css
-    └── app.js
+    ├── css/
+    │       └── 01-variables.css
+    │       ├── 02-base.css
+    │       ├── 03-layout.css
+    │       ├── 04-components.css
+    │       ├── 05-tables.css
+    │       ├── 06-login.css
+    │       └── 07-utilities.cs
+    └── js/
+            └── app.js

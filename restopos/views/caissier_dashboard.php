@@ -4,20 +4,25 @@ $orderStatusConfig = $orderStatusConfig ?? [];
 $recentTransactions = $recentTransactions ?? [];
 ?>
 
+<?php
+$fondCaisse = (float)get_parametre($pdo, 'fond_de_caisse', 50000);
+$heureOuverture = get_parametre($pdo, 'caisse_heure_ouverture', '09:00');
+$caisseToday = $caisseToday ?? ['encaissements' => 0, 'transactions' => 0];
+?>
 <div class="grid grid-3 mb-4">
   <div class="banner banner-amber">
     <p style="font-size:13px;color:#fde68a;margin:0;display:flex;align-items:center;gap:6px;"><?= icon('wallet', 14) ?> Fond de caisse</p>
-    <p class="mono" style="font-size:24px;font-weight:700;margin:6px 0 0;">50 000 FC</p>
-    <p style="font-size:11px;color:#fde68a;margin:4px 0 0;">Ouverture à 09:00</p>
+    <p class="mono" style="font-size:24px;font-weight:700;margin:6px 0 0;"><?= fmt($fondCaisse) ?></p>
+    <p style="font-size:11px;color:#fde68a;margin:4px 0 0;">Ouverture à <?= htmlspecialchars($heureOuverture) ?></p>
   </div>
   <div class="kpi-card">
     <p class="kpi-label">Encaissements</p>
-    <p class="kpi-value" style="color:#059669;">246 400 FC</p>
-    <p class="text-xs text-muted">87 transactions</p>
+    <p class="kpi-value" style="color:#059669;"><?= fmt($caisseToday['encaissements']) ?></p>
+    <p class="text-xs text-muted"><?= $caisseToday['transactions'] ?> transaction<?= $caisseToday['transactions'] > 1 ? 's' : '' ?></p>
   </div>
   <div class="kpi-card">
     <p class="kpi-label">Total en caisse</p>
-    <p class="kpi-value">296 400 FC</p>
+    <p class="kpi-value"><?= fmt($fondCaisse + $caisseToday['encaissements']) ?></p>
     <p class="text-xs text-muted">Fond + espèces</p>
   </div>
 </div>

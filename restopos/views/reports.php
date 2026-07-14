@@ -58,7 +58,7 @@ if ($maxStaffRevenue <= 0) { $maxStaffRevenue = 1; }
           <span class="font-semibold"><?= $s['name'] ?></span>
         </td>
         <td class="mono font-semibold"><?= $s['orders'] ?></td>
-        <td class="mono font-semibold" style="color:var(--accent);"><?= fmtShort($s['revenue']) ?> F</td>
+        <td class="mono font-semibold" style="color:var(--accent);"><?= fmtShort($s['revenue']) ?> FC</td>
         <td class="font-semibold text-xs flex gap-2" style="align-items:center;border:none;"><?= $s['rating'] ?> <?= icon('star', 12, 'fill:#facc15;color:#facc15;') ?></td>
       </tr>
       <?php endforeach; ?>

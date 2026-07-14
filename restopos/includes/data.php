@@ -1,10 +1,12 @@
 <?php
 require_once __DIR__ . '/config.php';
 
-function fmt($n) {
+function fmt($n)
+{
     return number_format($n, 0, ',', ' ') . ' FC';
 }
-function fmtShort($n) {
+function fmtShort($n)
+{
     return number_format($n, 0, ',', ' ');
 }
 
@@ -50,10 +52,17 @@ $navByRole = [
 ];
 
 $viewLabels = [
-    'dashboard' => 'Tableau de bord', 'tables' => 'Gestion des tables', 'orders' => 'Commandes',
-    'menu' => 'Menu & Produits', 'payments' => 'Paiements & Caisse', 'reports' => 'Rapports statistiques',
-    'users' => 'Utilisateurs', 'settings' => 'Paramètres', 'encaissement' => 'Encaisser une commande',
-    'prise-commande' => 'Prise de commande', 'mes-tables' => 'Mes tables',
+    'dashboard' => 'Tableau de bord',
+    'tables' => 'Gestion des tables',
+    'orders' => 'Commandes',
+    'menu' => 'Menu & Produits',
+    'payments' => 'Paiements & Caisse',
+    'reports' => 'Rapports statistiques',
+    'users' => 'Utilisateurs',
+    'settings' => 'Paramètres',
+    'encaissement' => 'Encaisser une commande',
+    'prise-commande' => 'Prise de commande',
+    'mes-tables' => 'Mes tables',
 ];
 
 $tableStatusConfig = [
@@ -208,11 +217,18 @@ if (isset($pdo)) {
     try {
         $stmt = $pdo->query("SELECT c.id_commande AS id, c.numero AS numero, tr.nom AS table_name, u.nom AS waiter_name, sc.code AS status, c.montant_total AS total, DATE_FORMAT(c.heure_creation, '%H:%i') AS time FROM commande c JOIN table_restaurant tr ON tr.id_table = c.id_table JOIN utilisateur u ON u.id_utilisateur = c.id_utilisateur JOIN statut_commande sc ON sc.id_statut_commande = c.id_statut_commande ORDER BY c.id_commande DESC");
         while ($row = $stmt->fetch()) {
-            $itemsStmt = $pdo->prepare("SELECT p.nom, lc.quantite FROM ligne_commande lc JOIN produit p ON p.id_produit = lc.id_produit WHERE lc.id_commande = :id");
+            $itemsStmt = $pdo->prepare("SELECT p.nom, lc.quantite, lc.prix_unitaire FROM ligne_commande lc JOIN produit p ON p.id_produit = lc.id_produit WHERE lc.id_commande = :id");
             $itemsStmt->execute(['id' => $row['id']]);
             $itemsList = [];
+            $itemsDetail = [];
             while ($item = $itemsStmt->fetch()) {
                 $itemsList[] = $item['nom'] . ' x' . $item['quantite'];
+                $itemsDetail[] = [
+                    'name' => $item['nom'],
+                    'qty' => (int)$item['quantite'],
+                    'unit_price' => (float)$item['prix_unitaire'],
+                    'line_total' => (float)$item['prix_unitaire'] * (int)$item['quantite'],
+                ];
             }
             $orders[] = [
                 'id' => $row['numero'],
@@ -224,6 +240,7 @@ if (isset($pdo)) {
                 'total' => (float)$row['total'],
                 'time' => $row['time'],
                 'items_list' => $itemsList,
+                'items_detail' => $itemsDetail,
             ];
         }
     } catch (PDOException $e) {
@@ -263,7 +280,7 @@ if (isset($pdo)) {
     }
 
     try {
-        $stmt = $pdo->query("SELECT DATE_FORMAT(heure_creation, '%Hh') AS hour, SUM(montant_total) AS revenue, COUNT(*) AS orders FROM commande WHERE heure_creation >= DATE_SUB(NOW(), INTERVAL 12 HOUR) GROUP BY DATE_FORMAT(heure_creation, '%H') ORDER BY MIN(heure_creation)");
+        $stmt = $pdo->query("SELECT DATE_FORMAT(heure_creation, '%Hh') AS hour, SUM(montant_total) AS revenue, COUNT(*) AS orders FROM commande WHERE DATE(heure_creation) = CURDATE() GROUP BY DATE_FORMAT(heure_creation, '%H') ORDER BY MIN(heure_creation)");
         while ($row = $stmt->fetch()) {
             $hourlyRevenue[] = ['hour' => $row['hour'], 'revenue' => (float)$row['revenue'], 'orders' => (int)$row['orders']];
         }
@@ -297,6 +314,90 @@ if (isset($pdo)) {
     } catch (PDOException $e) {
         $staffPerf = [];
     }
+}
+$kpiToday = [
+    'revenue' => 0,
+    'orders' => 0,
+    'avg_ticket' => 0,
+    'revenue_trend' => 0,
+    'orders_trend' => 0,
+    'ticket_trend' => 0,
+];
+$tablesOccupiedCount = 0;
+$tablesTotalCount = 0;
+$caisseToday = ['encaissements' => 0, 'transactions' => 0];
+
+if (isset($pdo)) {
+    try {
+        $stmt = $pdo->query("
+            SELECT COUNT(*) AS nb, COALESCE(SUM(montant_total),0) AS ca
+            FROM commande c
+            JOIN statut_commande sc ON sc.id_statut_commande = c.id_statut_commande
+            WHERE DATE(c.heure_creation) = CURDATE() AND sc.code != 'cancelled'
+        ");
+        $row = $stmt->fetch();
+        $kpiToday['orders'] = (int)$row['nb'];
+        $kpiToday['revenue'] = (float)$row['ca'];
+        $kpiToday['avg_ticket'] = $kpiToday['orders'] > 0 ? $kpiToday['revenue'] / $kpiToday['orders'] : 0;
+
+        $stmtY = $pdo->query("
+            SELECT COUNT(*) AS nb, COALESCE(SUM(montant_total),0) AS ca
+            FROM commande c
+            JOIN statut_commande sc ON sc.id_statut_commande = c.id_statut_commande
+            WHERE DATE(c.heure_creation) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND sc.code != 'cancelled'
+        ");
+        $rowY = $stmtY->fetch();
+        $revenueYesterday = (float)$rowY['ca'];
+        $ordersYesterday = (int)$rowY['nb'];
+        $avgYesterday = $ordersYesterday > 0 ? $revenueYesterday / $ordersYesterday : 0;
+
+        $kpiToday['revenue_trend'] = $revenueYesterday > 0
+            ? round((($kpiToday['revenue'] - $revenueYesterday) / $revenueYesterday) * 100, 1)
+            : ($kpiToday['revenue'] > 0 ? 100 : 0);
+        $kpiToday['orders_trend'] = $ordersYesterday > 0
+            ? round((($kpiToday['orders'] - $ordersYesterday) / $ordersYesterday) * 100, 1)
+            : ($kpiToday['orders'] > 0 ? 100 : 0);
+        $kpiToday['ticket_trend'] = $avgYesterday > 0
+            ? round((($kpiToday['avg_ticket'] - $avgYesterday) / $avgYesterday) * 100, 1)
+            : 0;
+    } catch (PDOException $e) {
+        // valeurs par défaut à 0
+    }
+
+    try {
+        $stmtC = $pdo->query("SELECT COUNT(*) AS nb, COALESCE(SUM(montant),0) AS total FROM transaction_paiement WHERE DATE(date_heure) = CURDATE()");
+        $rowC = $stmtC->fetch();
+        $caisseToday['transactions'] = (int)$rowC['nb'];
+        $caisseToday['encaissements'] = (float)$rowC['total'];
+    } catch (PDOException $e) {
+        // valeurs par défaut à 0
+    }
+}
+
+foreach ($tables as $t) {
+    $tablesTotalCount++;
+    if (($t['status'] ?? '') === 'occupied') {
+        $tablesOccupiedCount++;
+    }
+}
+$tablesOccupancyPct = $tablesTotalCount > 0 ? round(($tablesOccupiedCount / $tablesTotalCount) * 100) : 0;
+
+
+function get_parametre($pdo, $key, $default = '')
+{
+    static $cache = null;
+    if ($cache === null) {
+        $cache = [];
+        try {
+            $stmt = $pdo->query('SELECT cle, valeur FROM parametre');
+            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                $cache[$row['cle']] = $row['valeur'];
+            }
+        } catch (PDOException $e) {
+            $cache = [];
+        }
+    }
+    return array_key_exists($key, $cache) ? $cache[$key] : $default;
 }
 
 if (empty($checklistItems)) {
@@ -358,20 +459,25 @@ if (empty($notifications)) {
     }
 }
 
-function require_login() {
+function require_login()
+{
     if (empty($_SESSION['role'])) {
         header('Location: login.php');
         exit;
     }
 }
 
-function initials_from_name($name) {
+function initials_from_name($name)
+{
     $parts = explode(' ', $name);
     $ini = '';
-    foreach (array_slice($parts, 0, 2) as $p) { $ini .= mb_substr($p, 0, 1); }
+    foreach (array_slice($parts, 0, 2) as $p) {
+        $ini .= mb_substr($p, 0, 1);
+    }
     return mb_strtoupper($ini);
 }
 
-function icon($name, $size = 14, $extra = '') {
+function icon($name, $size = 14, $extra = '')
+{
     return '<i data-lucide="' . htmlspecialchars($name) . '" style="width:' . $size . 'px;height:' . $size . 'px;' . $extra . '"></i>';
 }

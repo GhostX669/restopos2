@@ -118,7 +118,7 @@ $categoriesList = $categoriesList ?? [];
       <p class="name"><?= htmlspecialchars($item['name']) ?></p>
       <p class="cat"><?= htmlspecialchars($item['category']) ?> <?= !$item['available'] ? '· <span style="color:#dc2626;">Indisponible</span>' : '' ?></p>
       <div class="flex-between">
-        <span class="price"><?= fmtShort($item['price']) ?> F</span>
+        <span class="price"><?= fmtShort($item['price']) ?> FC</span>
         <?php if (in_array($role, ['Administrateur', 'Gérant'], true)): ?>
         <div class="product-menu-wrap">
           <button type="button" class="icon-btn" onclick="toggleProductMenu(<?= (int)$item['id'] ?>)"><?= icon('more-horizontal', 14) ?></button>

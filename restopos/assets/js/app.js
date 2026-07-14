@@ -171,7 +171,7 @@ function renderCart() {
   }
 
   const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
-  if (totalEl) totalEl.textContent = total.toLocaleString('fr-FR') + ' F';
+  if (totalEl) totalEl.textContent = total.toLocaleString('fr-FR') + ' FC';
 
   const cartInput = document.getElementById('cart-json');
   if (cartInput) cartInput.value = JSON.stringify(cart);
