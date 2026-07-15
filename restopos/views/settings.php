@@ -9,6 +9,10 @@ try {
 } catch (PDOException $e) {
   $currentUserEmail = '';
 }
+$role = $role ?? ($_SESSION['role'] ?? '');
+$name = $name ?? ($_SESSION['name'] ?? '');
+$initials = $initials ?? ($_SESSION['initials'] ?? '');
+$rc = $rc ?? ($roleConfig[$role] ?? ['bg' => '#f3f4f6', 'text' => '#6b7280', 'color' => '#6b7280']);
 $sections = [
   ['id' => 'restaurant', 'label' => 'Restaurant', 'icon' => 'store', 'roles' => ['Administrateur', 'Gérant']],
   ['id' => 'account', 'label' => 'Mon compte', 'icon' => 'user', 'roles' => ['Administrateur', 'Gérant', 'Caissier', 'Serveur']],

@@ -84,8 +84,21 @@
           <p style="color:#9ca3af;max-width:380px;font-size:14px;line-height:1.6;">Commandes, tables, paiements et rapports — tout en un seul endroit, accessible à chaque membre de votre équipe.</p>
           <div class="grid grid-2 mt-4" style="max-width:380px;">
             <?php
-            $stats = [['label' => 'Tables gérées', 'value' => '15'], ['label' => 'Rôles disponibles', 'value' => '4'], ['label' => 'Modes de paiement', 'value' => '4'], ['label' => 'Rapports temps réel', 'value' => '∞']];
-            foreach ($stats as $s): ?>
+          $nbTables = count($tables ?? []);
+          $nbRoles = count($rolesList ?? []);
+          $nbModesPaiement = 0;
+          try {
+              $nbModesPaiement = (int)$pdo->query('SELECT COUNT(*) FROM mode_paiement')->fetchColumn();
+          } catch (PDOException $e) {
+              $nbModesPaiement = 0;
+          }
+          $stats = [
+              ['label' => 'Tables gérées', 'value' => (string)$nbTables],
+              ['label' => 'Rôles disponibles', 'value' => (string)$nbRoles],
+              ['label' => 'Modes de paiement', 'value' => (string)$nbModesPaiement],
+              ['label' => 'Rapports temps réel', 'value' => '∞'],
+          ];
+          foreach ($stats as $s): ?>
               <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;">
                 <p class="mono" style="font-size:22px;font-weight:700;margin:0;"><?= $s['value'] ?></p>
                 <p style="font-size:11px;color:#9ca3af;margin:2px 0 0;"><?= $s['label'] ?></p>

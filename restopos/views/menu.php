@@ -1,4 +1,5 @@
 <?php
+$role = $role ?? ($_SESSION['role'] ?? '');
 $menuItems = $menuItems ?? [];
 $categoriesList = $categoriesList ?? [];
 ?>

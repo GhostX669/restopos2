@@ -315,6 +315,7 @@ if (isset($pdo)) {
         $staffPerf = [];
     }
 }
+// ── KPIs temps réel (jour vs veille) ────────────────────────────────────
 $kpiToday = [
     'revenue' => 0,
     'orders' => 0,
@@ -481,3 +482,14 @@ function icon($name, $size = 14, $extra = '')
 {
     return '<i data-lucide="' . htmlspecialchars($name) . '" style="width:' . $size . 'px;height:' . $size . 'px;' . $extra . '"></i>';
 }
+try {
+        $paidStmt = $pdo->query("SELECT DISTINCT id_commande FROM transaction_paiement");
+        $paidIds = array_column($paidStmt->fetchAll(PDO::FETCH_ASSOC), 'id_commande');
+        foreach ($orders as &$o) {
+            $o['paid'] = in_array($o['id_commande'], $paidIds);
+        }
+        unset($o);
+    } catch (PDOException $e) {
+        foreach ($orders as &$o) { $o['paid'] = false; }
+        unset($o);
+    }

@@ -1,9 +1,15 @@
 <?php
+$orders = $orders ?? [];
+$tables = $tables ?? [];
+$tableStatusConfig = $tableStatusConfig ?? [];
+$orderStatusConfig = $orderStatusConfig ?? [];
 $name = $_SESSION['name'] ?? '';
 $myOrders = array_filter($orders, fn($o) => $o['waiter'] === $name);
 $myTables = array_filter($tables, fn($t) => $t['waiter'] === $name);
 $myRevenue = array_sum(array_column($myOrders, 'total'));
+
 ?>
+
 <div class="banner banner-green mb-4">
   <p style="color:#a7f3d0;font-size:13px;margin:0 0 12px;">Votre journée — <?= date('d/m/Y') ?></p>
   <div class="grid grid-3">

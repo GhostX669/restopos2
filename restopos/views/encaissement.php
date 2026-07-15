@@ -1,7 +1,10 @@
 <?php
 $orders = $orders ?? [];
 $order = null;
-foreach ($orders as $o) { if (($o['status'] ?? '') === 'ready') { $order = $o; break; } }
+foreach ($orders as $o) { if (($o['status'] ?? '') === 'ready' && empty($o['paid'])) { $order = $o; break; } }
+if (!$order) {
+    foreach ($orders as $o) { if (($o['status'] ?? '') === 'served' && empty($o['paid'])) { $order = $o; break; } }
+}
 $total = $order['total'] ?? 0;
 $itemsDetail = $order['items_detail'] ?? [];
 ?>
